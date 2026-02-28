@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🤖 MEXE 3202 – Robotics 2  
+# **🤖 MEXE 3202 – Robotics 2  **
 ### Mechanical Manipulator Simulation  
 ### Laboratory 1 (2026)  
 **Group 19**
