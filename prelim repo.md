@@ -367,7 +367,44 @@ https://github.com/user-attachments/assets/2e4260db-3bc3-4928-8ca6-8c2550e8daf2
 
 ## 🔹 Project Images
 
--- docu  pics  
+![223f552e-4d42-441e-bc7d-13b5999ed6ad](https://github.com/user-attachments/assets/71df8c51-c54f-48d6-a467-74f2119bf65b)
+
+
+---
+
+# ⚙️ CALIBRATION
+
+## 🔹 Calibration Procedure
+
+![087c1aea-2826-465e-a1fc-1486c16fe791](https://github.com/user-attachments/assets/c84bfc4f-468a-4b2f-9e64-90775763f3ed)
+
+![649340084_1482395990009421_530936068278990065_n](https://github.com/user-attachments/assets/d222634a-beda-4908-9458-169b53b2b268)
+![647924531_761401523495013_5028866445921834899_n](https://github.com/user-attachments/assets/a407594d-b038-480b-9c32-7b1efc6cd414)
+
+![642358632_935319702813217_7064893558162541556_n](https://github.com/user-attachments/assets/8adcd71e-9ac0-43a3-8f92-cead70d372ef)
+![653671507_961245206327184_4653076705075570788_n](https://github.com/user-attachments/assets/07038d0e-6fd2-4581-8dd0-ce53bddf2e66)
+![642341077_1112760464313935_3172043573863414524_n](https://github.com/user-attachments/assets/3e850e68-81f5-4772-8597-fdd179474102)
+![642589016_26593358656949034_6663102183343520272_n](https://github.com/user-attachments/assets/7a2a7ede-46a0-42e3-87d1-cd86e07f468c)
+
+
+
+---
+
+# 🦾 KINEMATIC DERIVATIONS
+
+![648330498_1511123100442640_539532584344813030_n](https://github.com/user-attachments/assets/7af59ac1-c3a9-4671-91d9-484f1cb0eb37)
+![649567747_2351388082007230_2834486893997274348_n](https://github.com/user-attachments/assets/45f2212f-6382-472e-8fb7-00a4763132cc)
+
+---
+
+# 🧪 TESTING
+
+![Test Procedure](images/test_procedure.png)
+
+![396b1ae7-fc12-4594-a944-708c0703b912](https://github.com/user-attachments/assets/5762b03c-936b-4566-999d-a67f76016ec3)
+![9e05c933-e8c1-4e3c-88b2-dddf662e4f9e](https://github.com/user-attachments/assets/0f68e1b7-cd65-43d5-ac5d-5a1da8505d5e)
+![92225516-1dcd-4341-afb3-a2faae42ed19](https://github.com/user-attachments/assets/2469b724-e8a6-4f68-b3ef-a062560467ff)
+
 
 ---
 
