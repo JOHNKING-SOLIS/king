@@ -282,20 +282,6 @@ Using the standard D-H transformation matrix:
 
 # 🧪 TESTING & RESULTS 
 
-## 🔹 Test Points (Forward Kinematics Validation)
-
-Five (5) different joint configurations were tested to validate the forward kinematics model.
-
-
-| Test # | θ₁ | θ₂ | θ₃ | End-Effector Position (x, y, z) |
-| ------ | -- | -- | -- | ------------------------------- |
-| 1      |    |    |    |                                 |
-| 2      |    |    |    |                                 |
-| 3      |    |    |    |                                 |
-| 4      |    |    |    |                                 |
-| 5      |    |    |    |                                 |
-
----
 
 # 🎥 MOTION VALIDATION (5 MOVEMENTS)
 
@@ -336,7 +322,7 @@ The robotic manipulator performs a pick-and-place operation using only forward k
 
 ---
 
-# 💻 SOURCE CODE
+# 💻  CODES
 
 ## 🔹 MATLAB Code
 
@@ -345,6 +331,10 @@ The robotic manipulator performs a pick-and-place operation using only forward k
 ## 🔹 Arduino Code
 
 --insert arduino code
+
+## 🔹 python Code
+
+--insert python code
 
 ---
 
