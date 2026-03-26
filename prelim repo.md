@@ -249,7 +249,8 @@ Post all simulations and analytical comparisons of Python and MATLAB results.
 
 Insert the labeled diagram of the Spartan Robokit below (show joints, links, coordinate frames, and directions of motion):
 
---drawing ni lance
+--![656826964_25459289267078580_8560801011013626232_n](https://github.com/user-attachments/assets/ba12c657-b86f-464b-8d34-1b6a9aad9962)
+
 
 ---
 
@@ -266,9 +267,22 @@ Insert the labeled diagram of the Spartan Robokit below (show joints, links, coo
 
 1. Denavit-Hartenberg (D-H) Notations
 Step 1: Assign Frames according to the 4 D-H Rules
+
+![656826964_25459289267078580_8560801011013626232_n](https://github.com/user-attachments/assets/988fa7ec-a493-47ce-9291-9af096c51736)
+
+
+
 Step 2: D-H Parametric Table
+
+![653538507_34797554683191524_7175764395397224444_n](https://github.com/user-attachments/assets/ff805339-6796-4b12-8e46-b554170514da)
+
+
+
 Step 3: Homogeneous Transformation Matrices
 Using the standard D-H transformation matrix:
+
+![653990871_1267525971417381_6504083263643205526_n](https://github.com/user-attachments/assets/dbd099bf-6088-4cdc-a434-06dada222f8b)
+![655267471_1215592753988883_879055588574067030_n](https://github.com/user-attachments/assets/c23da29d-5410-44cd-84e2-78a5df3763fb)
 
 ---
 
@@ -295,6 +309,11 @@ Each movement corresponds to a unique set of joint variables.
   [▶️ Watch Video](#)
 
 
+
+https://github.com/user-attachments/assets/ac5c21b0-ab11-4983-9f66-112809161212
+
+
+
 ---
 
 # 🎯 PICK-AND-PLACE DEMONSTRATION
@@ -309,6 +328,12 @@ The robotic manipulator performs a pick-and-place operation using only forward k
 ## 🔹 Pick-and-Place Video
 
 [▶️ Watch Pick-and-Place Demo](#)
+
+
+
+https://github.com/user-attachments/assets/2e4260db-3bc3-4928-8ca6-8c2550e8daf2
+
+
 
 ---
 
