@@ -243,59 +243,86 @@ Post all simulations and analytical comparisons of Python and MATLAB results.
 
 ---
 
-# 🦾 KINEMATICS ANALYSIS
+# 🦾 KINEMATICS ANALYSIS  
+**Spartan Robokit**
+
+---
 
 ## 🔹 Kinematic Diagram
 
-Insert the labeled diagram of the Spartan Robokit below (show joints, links, coordinate frames, and directions of motion):
-
---![656826964_25459289267078580_8560801011013626232_n](https://github.com/user-attachments/assets/ba12c657-b86f-464b-8d34-1b6a9aad9962)
-
-
----
-
-## 🔹 Homogeneous Transformation Matrices
-
-### 🔸 Standard D-H Formula Used
-
-[ cos(θi)  -sin(θi)cos(αi)   sin(θi)sin(αi)  ai*cos(θi) ]
-[ sin(θi)   cos(θi)cos(αi)  -cos(θi)sin(αi)  ai*sin(θi) ]
-[   0         sin(αi)          cos(αi)          di      ]
-[   0            0                0              1      ]
+<div align="center">
+  <img 
+    src="https://github.com/user-attachments/assets/ba12c657-b86f-464b-8d34-1b6a9aad9962" 
+    alt="Kinematic Diagram of Spartan Robokit" 
+    width="85%"
+  />
+  <br><br>
+  <strong>Figure 1:</strong> Labeled diagram of the Spartan Robokit showing joints, links, coordinate frames, and directions of motion.
+</div>
 
 ---
 
-1. Denavit-Hartenberg (D-H) Notations
-Step 1: Assign Frames according to the 4 D-H Rules
+## 1. Denavit-Hartenberg (D-H) Notations
 
-![656826964_25459289267078580_8560801011013626232_n](https://github.com/user-attachments/assets/988fa7ec-a493-47ce-9291-9af096c51736)
+### Step 1: Assign Frames according to the 4 D-H Rules
+
+<div align="center">
+  <img 
+    width="720" 
+    alt="D-H Frame Assignment" 
+    src="https://github.com/user-attachments/assets/988fa7ec-a493-47ce-9291-9af096c51736"
+  />
+  <br><br>
+  <strong>Figure 2:</strong> Coordinate frame assignment according to D-H rules.
+</div>
+
+### Step 2: D-H Parametric Table
+
+<div align="center">
+  <img 
+    width="620" 
+    alt="D-H Parametric Table" 
+    src="https://github.com/user-attachments/assets/ff805339-6796-4b12-8e46-b554170514da"
+  />
+  <br><br>
+  <em>Table 1. D-H parameters for the Spartan Robokit</em>
+</div>
+
+### Step 3: Homogeneous Transformation Matrices
+
+**Using the standard D-H transformation matrix:**
+
+<div align="center">
+  <table border="0" cellspacing="30">
+    <tr>
+      <td align="center" valign="top">
+        <img 
+          width="480" 
+          alt="Homogeneous Transformation Matrix 1" 
+          src="https://github.com/user-attachments/assets/dbd099bf-6088-4cdc-a434-06dada222f8b"
+        />
+        <br><br>
+      </td>
+      <td align="center" valign="top">
+        <img 
+          width="480" 
+          alt="Homogeneous Transformation Matrix 2" 
+          src="https://github.com/user-attachments/assets/c23da29d-5410-44cd-84e2-78a5df3763fb"
+        />
+        <br><br>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p align="center">
+  <strong>Figure 3 & 4:</strong> Individual homogeneous transformation matrices derived from the D-H table
+</p>
 
 
-
-Step 2: D-H Parametric Table
-
-![653538507_34797554683191524_7175764395397224444_n](https://github.com/user-attachments/assets/ff805339-6796-4b12-8e46-b554170514da)
-
-
-
-Step 3: Homogeneous Transformation Matrices
-Using the standard D-H transformation matrix:
-
-![653990871_1267525971417381_6504083263643205526_n](https://github.com/user-attachments/assets/dbd099bf-6088-4cdc-a434-06dada222f8b)
-![655267471_1215592753988883_879055588574067030_n](https://github.com/user-attachments/assets/c23da29d-5410-44cd-84e2-78a5df3763fb)
+# 🧪 TESTING & RESULTS
 
 ---
-
-## 🔹 Circuit Diagram
-
---dragram arduino pic
-
----
-
-
-
-# 🧪 TESTING & RESULTS 
-
 
 # 🎥 MOTION VALIDATION (5 MOVEMENTS)
 
@@ -303,16 +330,19 @@ Using the standard D-H transformation matrix:
 
 Each movement corresponds to a unique set of joint variables.
 
+<div align="center">
 
-* *Movement 1 to 5  :*
-(Insert description)
-  [▶️ Watch Video](#)
+**Movement 1 to 5**
 
+<img 
+  src="https://github.com/user-attachments/assets/ac5c21b0-ab11-4983-9f66-112809161212" 
+  alt="Motion Validation - 5 Movements" 
+  width="85%"
+/>
+<br><br>
+<strong>Figure 5:</strong> Demonstration of the five individual movements of the Spartan Robokit.
 
-
-https://github.com/user-attachments/assets/ac5c21b0-ab11-4983-9f66-112809161212
-
-
+</div>
 
 ---
 
@@ -322,29 +352,60 @@ https://github.com/user-attachments/assets/ac5c21b0-ab11-4983-9f66-112809161212
 
 The robotic manipulator performs a pick-and-place operation using only forward kinematics calculations. The robot moves from an initial position, picks up an object, and transfers it to a target location.
 
-
----
-
 ## 🔹 Pick-and-Place Video
 
-[▶️ Watch Pick-and-Place Demo](#)
+<div align="center">
 
+<img 
+  src="https://github.com/user-attachments/assets/2e4260db-3bc3-4928-8ca6-8c2550e8daf2" 
+  alt="Pick-and-Place Demonstration" 
+  width="85%"
+/>
+<br><br>
+<strong>Figure 6:</strong> Pick-and-Place task demonstration using forward kinematics.
 
-
-https://github.com/user-attachments/assets/2e4260db-3bc3-4928-8ca6-8c2550e8daf2
+</div>
 
 
 
 ---
 
 ## 🔹 Sequence of Operation
+1. Initial Position
 
-1. Move to initial position
-2. Align end-effector with object
-3. Activate gripper (pick)
-4. Move to target location
-5. Release object (place)
+The robotic arm begins in its default or home configuration, where all joint angles (θ1, θ2, θ3) are set to 0°, and the gripper is fully closed. This position is essential as it establishes a consistent reference point for the entire operation. Starting from a fixed initial state ensures repeatability and accuracy in successive cycles. It also allows the system to recalibrate if needed and minimizes positional errors that may accumulate during operation.
 
+2. Opening the Gripper
+
+In this step, the gripper is opened to 45° while all joint angles remain unchanged. This action prepares the end-effector to interact with the object by creating sufficient space for grasping. Maintaining the arm’s position while only adjusting the gripper ensures stability and prevents unintended movement, which could misalign the system before object acquisition.
+
+3. Positioning Toward the Object
+
+The robotic arm moves toward the object by adjusting θ2 to 70°, while θ1 and θ3 remain at 0°. This motion effectively lowers or extends the arm downward, depending on the arm’s configuration. θ2 primarily controls the vertical displacement or reach of the arm, making it crucial for accurately aligning the gripper with the object. Keeping θ1 fixed ensures no horizontal displacement, allowing precise targeting.
+
+4. Grasping the Object
+
+Once the arm is properly positioned, the gripper closes back to 0°, securing the object firmly. The arm joints remain stationary during this step to maintain alignment and avoid shifting the object. This phase highlights the importance of synchronization between mechanical positioning and gripping action to ensure a stable and successful grasp.
+
+5. Lifting the Object
+
+After the object is secured, θ2 returns to 0°, raising the arm and lifting the object away from its original position. This upward movement is critical to prevent collisions with surrounding surfaces or obstacles during transport. By lifting the object to a safe height, the system ensures a smooth transition to the next movement phase.
+
+6. Moving to Target Location
+
+The arm then rotates θ1 to 60°, changing its horizontal orientation. This movement redirects the arm from the pickup point toward the designated target location. θ1 controls the base rotation, making it responsible for lateral positioning. This step demonstrates how rotational motion is used to transfer the object across different مناطق within the workspace.
+
+7. Lowering to Target Position
+
+To place the object, θ2 is again adjusted to 70°, lowering the arm toward the target surface. This controlled downward movement ensures that the object is accurately positioned before release. Proper alignment at this stage is crucial to avoid misplacement or dropping the object from an unsafe height.
+
+8. Releasing the Object
+
+The gripper opens to 45°, releasing the object at the target location. This step completes the transfer process. The success of this phase depends on the precise positioning achieved in the previous steps, ensuring that the object is placed exactly where intended.
+
+9. Returning to Initial Position
+
+Finally, all joints (θ1, θ2, θ3) return to 0°, and the gripper closes. This resets the robotic arm to its original configuration, preparing it for the next operation cycle. Returning to the home position ensures consistency, reduces cumulative error, and allows continuous and repeatable operation.
 ---
 
 # 💻  CODES
