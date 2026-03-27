@@ -389,6 +389,7 @@ Figure 7: Sequence of Operation for Pick-and-Place Task
 ## 🔹 MATLAB Code
 
 ```
+
 function varargout = ROBOT(varargin)
 % ROBOT MATLAB code for ROBOT.fig
 %      ROBOT, by itself, creates a new ROBOT or raises the existing
@@ -917,6 +918,8 @@ end
 % Hint: delete(hObject) closes the figure
 delete(hObject);
 
+```
+
 ## 🔹 Arduino Code
 
 ```
@@ -1017,6 +1020,7 @@ void loop() {
   }
 }
 
+```
 
 ## 🔹 python Code
 
