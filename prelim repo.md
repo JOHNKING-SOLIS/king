@@ -388,7 +388,6 @@ Figure 7: Sequence of Operation for Pick-and-Place Task
 
 ## 🔹 MATLAB Code
 
-The MATLAB program was developed using the Robotics Toolbox by Peter Corke to simulate the 3-DOF Spartan Robokit, visualize its motion, and transmit joint angle commands to the Arduino through serial communication. The code also computes the forward kinematics of the manipulator and displays the end-effector position in Cartesian coordinates.
 
 function varargout = ROBOT(varargin)
 % ROBOT MATLAB code for ROBOT.fig
@@ -462,14 +461,14 @@ a2 = 72;  % Upper arm length
 a3 = 72;  % Forearm length
 
 %% D-H Parameters [theta, d, r, alpha, offset]
-H0_1 = Link([0, a1, 0, pi/2, 0, 0]);         % Base to shoulder
-H1_2 = Link([0, 0, a2, 0, 0, deg2rad(90)]);  % Shoulder to elbow
+H0_1 = Link([0, a1, 0, pi/2, 0, 0]);      % Base to shoulder
+H1_2 = Link([0, 0, a2, 0, 0, deg2rad(90)]); % Shoulder to elbow
 H2_3 = Link([0, 0, a3, 0, 0, deg2rad(270)]); % Elbow to wrist
 
 % Create robot model
 robot = SerialLink([H0_1 H1_2 H2_3], 'name', '3-DOF Robot');
 
-% Initial plot with neutral position
+% Initial plot with neutral position0
 initial_q = [0 0 0];
 robot.plot(initial_q, 'workspace', [-160 160 -160 160 0 200]);
 
@@ -519,16 +518,23 @@ try
     handles.serial_connected = true;
     serial_connected = true;
     
+    % Update status (if you have a status text field)
+    % set(handles.status_text, 'String', 'Connected to Arduino');
+    
 catch ME
     % Connection failed
     disp('Arduino/ESP32 NOT detected. Running in simulation mode only.');
     disp(['Error: ' ME.message]);
     handles.serial_connected = false;
     serial_connected = false;
+    % set(handles.status_text, 'String', 'Simulation Mode - No Hardware');
 end
 
 % Update handles structure
 guidata(hObject, handles);
+
+% UIWAIT makes ROBOT wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
@@ -544,28 +550,44 @@ varargout{1} = handles.output;
 
 % --- Servo 1 Edit Box Callback ---
 function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Get and validate servo 1 value
 servo1_value = str2double(get(hObject, 'String'));
 
+% Validate input
 if isnan(servo1_value)
+    % Not a number
     set(hObject, 'String', '0');
     servo1_value = 0;
     uiwait(errordlg('Please enter a valid number for Servo 1', 'Input Error'));
 elseif servo1_value < 0 || servo1_value > 180
+    % Out of range
     set(hObject, 'String', '90');
     servo1_value = 90;
     uiwait(warndlg('Servo 1 angle must be between 0 and 180 degrees', 'Range Error'));
 end
 
+% Store in handles
 handles.servo1 = servo1_value;
 disp(['Servo 1 set to: ' num2str(servo1_value) ' degrees']);
+
+% Save handles
 guidata(hObject, handles);
 
 
 % --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
 set(hObject, 'String', '0');
 
+% Hint: edit controls usually have a white background on Windows.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
@@ -573,9 +595,14 @@ end
 
 % --- Servo 2 Edit Box Callback ---
 function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Get and validate servo 2 value
 servo2_value = str2double(get(hObject, 'String'));
 
+% Validate input
 if isnan(servo2_value)
     set(hObject, 'String', '0');
     servo2_value = 0;
@@ -586,13 +613,21 @@ elseif servo2_value < 0 || servo2_value > 100
     uiwait(warndlg('Servo 2 angle must be between 0 and 100 degrees', 'Range Error'));
 end
 
+% Store in handles
 handles.servo2 = servo2_value;
 disp(['Servo 2 set to: ' num2str(servo2_value) ' degrees']);
+
+% Save handles
 guidata(hObject, handles);
 
 
 % --- Executes during object creation, after setting all properties.
 function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
 set(hObject, 'String', '0');
 
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
@@ -602,9 +637,14 @@ end
 
 % --- Servo 3 Edit Box Callback ---
 function edit3_Callback(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Get and validate servo 3 value
 servo3_value = str2double(get(hObject, 'String'));
 
+% Validate input
 if isnan(servo3_value)
     set(hObject, 'String', '0');
     servo3_value = 0;
@@ -615,13 +655,21 @@ elseif servo3_value < 0 || servo3_value > 120
     uiwait(warndlg('Servo 3 angle must be between 0 and 120 degrees', 'Range Error'));
 end
 
+% Store in handles
 handles.servo3 = servo3_value;
 disp(['Servo 3 set to: ' num2str(servo3_value) ' degrees']);
+
+% Save handles
 guidata(hObject, handles);
 
 
 % --- Executes during object creation, after setting all properties.
 function edit3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
 set(hObject, 'String', '0');
 
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
@@ -631,9 +679,14 @@ end
 
 % --- Gripper Edit Box Callback ---
 function edit11_Callback(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Get and validate gripper value (0 = open, 180 = closed typically)
 gripper_value = str2double(get(hObject, 'String'));
 
+% Validate input
 if isnan(gripper_value)
     set(hObject, 'String', '0');
     gripper_value = 0;
@@ -644,13 +697,23 @@ elseif gripper_value < 0 || gripper_value > 180
     uiwait(warndlg('Gripper value must be between 0 and 180', 'Range Error'));
 end
 
+% Store in handles
 handles.servo4 = gripper_value;
 disp(['Gripper set to: ' num2str(gripper_value)]);
+
+% Save handles
 guidata(hObject, handles);
+
+
 
 
 % --- Executes during object creation, after setting all properties.
 function edit11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
 set(hObject, 'String', '0');
 
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
@@ -660,6 +723,9 @@ end
 
 % --- Send Button Callback ---
 function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
 clc;
 disp('===================================');
@@ -682,7 +748,7 @@ q2_deg = str2double(get(handles.edit2, 'String'));
 q3_deg = str2double(get(handles.edit3, 'String'));
 gripper = str2double(get(handles.edit11, 'String'));
 
-% Validate inputs
+% Validate inputs (ensure they're numbers)
 if isnan(q1_deg), q1_deg = 0; set(handles.edit1, 'String', '0'); end
 if isnan(q2_deg), q2_deg = 0; set(handles.edit2, 'String', '0'); end
 if isnan(q3_deg), q3_deg = 0; set(handles.edit3, 'String', '0'); end
@@ -692,6 +758,7 @@ if isnan(gripper), gripper = 0; set(handles.edit11, 'String', '0'); end
 q1 = deg2rad(q1_deg);
 q2 = deg2rad(q2_deg);
 q3 = deg2rad(q3_deg);
+
 
 % Display values being sent
 disp('Command Values:');
@@ -703,6 +770,7 @@ disp(['  Gripper: ' num2str(gripper)]);
 %% SEND TO ARDUINO/ESP32
 if handles.serial_connected && ~isempty(handles.serial_port)
     try
+        % Use existing serial connection
         s = handles.serial_port;
         
         % Format command: "SERVO <s1> <s2> <s3> <gripper>"
@@ -719,6 +787,7 @@ if handles.serial_connected && ~isempty(handles.serial_port)
         end
         
     catch ME
+        % Communication error
         disp('✗ Failed to send command to Arduino!');
         disp(['  Error: ' ME.message]);
         
@@ -761,7 +830,7 @@ q = [q1, -q2, q3];  % Note: negative for q2 based on your kinematics
 
 % Create smooth trajectory from previous position
 q_start = q_prev;
-nSteps = 15;
+nSteps = 15;  % Number of interpolation steps
 q_traj = jtraj(q_start, q, nSteps);
 
 % Update robot model
@@ -770,7 +839,7 @@ robot = SerialLink([H0_1 H1_2 H2_3], 'name', '3-DOF Robot');
 % Animate the movement
 for i = 1:nSteps
     robot.animate(q_traj(i, :));
-    pause(0.03);
+    pause(0.03);  % Small pause for smooth animation
 end
 
 % Store current joint angles for next move
@@ -792,6 +861,7 @@ set(handles.edit8, 'String', num2str(position(1), '%.2f'));  % X
 set(handles.edit9, 'String', num2str(position(2), '%.2f'));  % Y
 set(handles.edit10, 'String', num2str(position(3), '%.2f')); % Z
 
+% Save updated handles
 guidata(hObject, handles);
 
 
@@ -799,6 +869,7 @@ guidata(hObject, handles);
 function edit8_Callback(hObject, eventdata, handles)
 % This is typically read-only, so we don't process input
 
+% --- Executes during object creation, after setting all properties.
 function edit8_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
@@ -809,6 +880,7 @@ end
 function edit9_Callback(hObject, eventdata, handles)
 % This is typically read-only, so we don't process input
 
+% --- Executes during object creation, after setting all properties.
 function edit9_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
@@ -819,6 +891,7 @@ end
 function edit10_Callback(hObject, eventdata, handles)
 % This is typically read-only, so we don't process input
 
+% --- Executes during object creation, after setting all properties.
 function edit10_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
@@ -827,7 +900,11 @@ end
 
 % --- Optional: Close function to clean up serial connection ---
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Clean up serial connection when GUI closes
 if isfield(handles, 'serial_port') && ~isempty(handles.serial_port)
     try
         delete(handles.serial_port);
@@ -837,7 +914,10 @@ if isfield(handles, 'serial_port') && ~isempty(handles.serial_port)
     end
 end
 
+% Hint: delete(hObject) closes the figure
 delete(hObject);
+
+
 
 ## 🔹 Arduino Code
 
