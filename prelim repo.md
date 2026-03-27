@@ -369,35 +369,19 @@ The pick-and-place task is executed through the following 9 sequential steps:
 Figure 7: Sequence of Operation for Pick-and-Place Task
 </div>
 
-### Detailed Steps:
+### Detailed Steps
 
-1. **Initial Position**  
-   The robotic arm begins in its default home configuration, where all joint angles (θ₁, θ₂, θ₃) are set to 0°, and the gripper is fully closed. This establishes a consistent reference point for the entire operation and ensures repeatability.
-
-2. **Opening the Gripper**  
-   The gripper is opened to 45° while all joint angles remain unchanged. This prepares the end-effector to grasp the object without moving the arm.
-
-3. **Positioning Toward the Object**  
-   The arm moves toward the object by adjusting θ₂ to 70°, while θ₁ and θ₃ remain at 0°. This motion lowers the arm to align the gripper with the object.
-
-4. **Grasping the Object**  
-   Once positioned correctly, the gripper closes back to 0°, securely grasping the object. The arm joints remain stationary during this step to maintain precise alignment.
-
-5. **Lifting the Object**  
-   After grasping, θ₂ returns to 0°, raising the arm and lifting the object to a safe height to avoid collisions during transport.
-
-6. **Moving to Target Location**  
-   The arm rotates θ₁ to 60°, redirecting the end-effector horizontally toward the target location.
-
-7. **Lowering to Target Position**  
-   θ₂ is adjusted again to 70° to lower the arm and position the object accurately above the target surface.
-
-8. **Releasing the Object**  
-   The gripper opens to 45°, releasing the object at the desired target location.
-
-9. **Returning to Initial Position**  
-   All joints (θ₁, θ₂, θ₃) return to 0°, and the gripper closes, resetting the robotic arm to its home configuration for the next cycle.
-
+| Step | Action | Description |
+|------|--------|------------|
+| 1 | Initial Position | The robotic arm starts in its home configuration with θ₁ = 0°, θ₂ = 0°, θ₃ = 0°, and the gripper closed. This ensures a consistent reference and repeatability. |
+| 2 | Opening the Gripper | The gripper opens to 45° while all joint angles remain unchanged, preparing the end-effector to grasp the object. |
+| 3 | Positioning Toward the Object | θ₂ is adjusted to 70° while θ₁ and θ₃ remain at 0°, lowering the arm to align with the object. |
+| 4 | Grasping the Object | The gripper closes to 0°, securing the object while maintaining the arm’s position for accurate alignment. |
+| 5 | Lifting the Object | θ₂ returns to 0°, lifting the object to a safe height to avoid collisions during movement. |
+| 6 | Moving to Target Location | θ₁ rotates to 60°, moving the arm horizontally toward the target location. |
+| 7 | Lowering to Target Position | θ₂ is adjusted to 70° to lower the object precisely onto the target surface. |
+| 8 | Releasing the Object | The gripper opens to 45°, releasing the object at the target location. |
+| 9 | Returning to Initial Position | All joints return to 0° and the gripper closes, resetting the system for the next cycle. |
 ---
 
 # 💻  CODES
