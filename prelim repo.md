@@ -388,12 +388,635 @@ Figure 7: Sequence of Operation for Pick-and-Place Task
 
 ## 🔹 MATLAB Code
 
---insert MATLAB code
+```
+function varargout = ROBOT(varargin)
+% ROBOT MATLAB code for ROBOT.fig
+%      ROBOT, by itself, creates a new ROBOT or raises the existing
+%      singleton*.
+%
+%      H = ROBOT returns the handle to a new ROBOT or the handle to
+%      the existing singleton*.
+%
+%      ROBOT('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in ROBOT.M with the given input arguments.
+%
+%      ROBOT('Property','Value',...) creates a new ROBOT or raises the
+%      existing singleton*. Starting from the left, property value pairs are
+%      applied to the GUI before ROBOT_OpeningFcn gets called. An
+%      unrecognized property name or invalid value makes property application
+%      stop. All inputs are passed to ROBOT_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu. Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
 
+% Last Modified by GUIDE v2.5 12-Jul-2025 19:56:07
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @ROBOT_OpeningFcn, ...
+                   'gui_OutputFcn',  @ROBOT_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before ROBOT is made visible.
+function ROBOT_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to ROBOT (see VARARGIN)
+
+% Choose default command line output for ROBOT
+handles.output = hObject;
+
+% Initialize Robotics Toolbox
+startup_rvc
+
+% Initialize global variables
+global robot q_prev serial_connected;
+q_prev = [0 0 0];
+serial_connected = false;
+
+% Robot parameters
+syms a1 a2 a3
+
+%% Link lengths (in mm or cm - be consistent)
+a1 = 36;  % Base height
+a2 = 72;  % Upper arm length
+a3 = 72;  % Forearm length
+
+%% D-H Parameters [theta, d, r, alpha, offset]
+H0_1 = Link([0, a1, 0, pi/2, 0, 0]);      % Base to shoulder
+H1_2 = Link([0, 0, a2, 0, 0, deg2rad(90)]); % Shoulder to elbow
+H2_3 = Link([0, 0, a3, 0, 0, deg2rad(270)]); % Elbow to wrist
+
+% Create robot model
+robot = SerialLink([H0_1 H1_2 H2_3], 'name', '3-DOF Robot');
+
+% Initial plot with neutral position0
+initial_q = [0 0 0];
+robot.plot(initial_q, 'workspace', [-160 160 -160 160 0 200]);
+
+% Calculate initial end-effector position
+T = robot.fkine(initial_q);
+position = T.t;
+
+% Display initial position
+disp('Initial End-effector Position [x y z]:');
+disp(position');
+
+% Update position display
+set(handles.edit8, 'String', num2str(position(1), '%.2f'));  % X
+set(handles.edit9, 'String', num2str(position(2), '%.2f'));  % Y
+set(handles.edit10, 'String', num2str(position(3), '%.2f')); % Z
+
+% Initialize servo values in handles
+handles.servo1 = 0;
+handles.servo2 = 0;
+handles.servo3 = 0;
+handles.servo4 = 0;
+handles.serial_connected = false;
+handles.serial_port = [];
+
+% Set default values in edit boxes
+set(handles.edit1, 'String', '0');
+set(handles.edit2, 'String', '0');
+set(handles.edit3, 'String', '0');
+set(handles.edit11, 'String', '0');
+
+% Try to connect to Arduino/ESP32
+try
+    % CHANGE THIS TO YOUR ACTUAL COM PORT
+    % On Windows: "COM3", "COM4", etc.
+    % On Linux: "/dev/ttyUSB0", "/dev/ttyACM0"
+    % On Mac: "/dev/cu.usbserial-XXX"
+    s = serialport("COM5", 115200);  % <-- CHANGE THIS PORT
+    
+    % Test connection by sending initial zeros
+    cmd = sprintf("SERVO %d %d %d %d", 0, 0, 0, 0);
+    writeline(s, cmd);
+    disp("Arduino/ESP32 Connected successfully!");
+    disp("Sent initial command: " + cmd);
+    
+    % Store serial connection
+    handles.serial_port = s;
+    handles.serial_connected = true;
+    serial_connected = true;
+    
+    % Update status (if you have a status text field)
+    % set(handles.status_text, 'String', 'Connected to Arduino');
+    
+catch ME
+    % Connection failed
+    disp('Arduino/ESP32 NOT detected. Running in simulation mode only.');
+    disp(['Error: ' ME.message]);
+    handles.serial_connected = false;
+    serial_connected = false;
+    % set(handles.status_text, 'String', 'Simulation Mode - No Hardware');
+end
+
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes ROBOT wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = ROBOT_OutputFcn(hObject, eventdata, handles)
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% --- Servo 1 Edit Box Callback ---
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get and validate servo 1 value
+servo1_value = str2double(get(hObject, 'String'));
+
+% Validate input
+if isnan(servo1_value)
+    % Not a number
+    set(hObject, 'String', '0');
+    servo1_value = 0;
+    uiwait(errordlg('Please enter a valid number for Servo 1', 'Input Error'));
+elseif servo1_value < 0 || servo1_value > 180
+    % Out of range
+    set(hObject, 'String', '90');
+    servo1_value = 90;
+    uiwait(warndlg('Servo 1 angle must be between 0 and 180 degrees', 'Range Error'));
+end
+
+% Store in handles
+handles.servo1 = servo1_value;
+disp(['Servo 1 set to: ' num2str(servo1_value) ' degrees']);
+
+% Save handles
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
+set(hObject, 'String', '0');
+
+% Hint: edit controls usually have a white background on Windows.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Servo 2 Edit Box Callback ---
+function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get and validate servo 2 value
+servo2_value = str2double(get(hObject, 'String'));
+
+% Validate input
+if isnan(servo2_value)
+    set(hObject, 'String', '0');
+    servo2_value = 0;
+    uiwait(errordlg('Please enter a valid number for Servo 2', 'Input Error'));
+elseif servo2_value < 0 || servo2_value > 100
+    set(hObject, 'String', '90');
+    servo2_value = 90;
+    uiwait(warndlg('Servo 2 angle must be between 0 and 100 degrees', 'Range Error'));
+end
+
+% Store in handles
+handles.servo2 = servo2_value;
+disp(['Servo 2 set to: ' num2str(servo2_value) ' degrees']);
+
+% Save handles
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
+set(hObject, 'String', '0');
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Servo 3 Edit Box Callback ---
+function edit3_Callback(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get and validate servo 3 value
+servo3_value = str2double(get(hObject, 'String'));
+
+% Validate input
+if isnan(servo3_value)
+    set(hObject, 'String', '0');
+    servo3_value = 0;
+    uiwait(errordlg('Please enter a valid number for Servo 3', 'Input Error'));
+elseif servo3_value < 0 || servo3_value > 120
+    set(hObject, 'String', '90');
+    servo3_value = 90;
+    uiwait(warndlg('Servo 3 angle must be between 0 and 120 degrees', 'Range Error'));
+end
+
+% Store in handles
+handles.servo3 = servo3_value;
+disp(['Servo 3 set to: ' num2str(servo3_value) ' degrees']);
+
+% Save handles
+guidata(hObject, handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function edit3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
+set(hObject, 'String', '0');
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Gripper Edit Box Callback ---
+function edit11_Callback(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get and validate gripper value (0 = open, 180 = closed typically)
+gripper_value = str2double(get(hObject, 'String'));
+
+% Validate input
+if isnan(gripper_value)
+    set(hObject, 'String', '0');
+    gripper_value = 0;
+    uiwait(errordlg('Please enter a valid number for Gripper', 'Input Error'));
+elseif gripper_value < 0 || gripper_value > 180
+    set(hObject, 'String', '0');
+    gripper_value = 0;
+    uiwait(warndlg('Gripper value must be between 0 and 180', 'Range Error'));
+end
+
+% Store in handles
+handles.servo4 = gripper_value;
+disp(['Gripper set to: ' num2str(gripper_value)]);
+
+% Save handles
+guidata(hObject, handles);
+
+
+
+
+% --- Executes during object creation, after setting all properties.
+function edit11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Set default value
+set(hObject, 'String', '0');
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Send Button Callback ---
+function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+clc;
+disp('===================================');
+disp('Sending command to robot...');
+disp('===================================');
+
+% Initialize Robotics Toolbox if needed
+startup_rvc
+
+% Get global variables
+global robot q_prev;
+
+if isempty(q_prev)
+    q_prev = [0 0 0];
+end
+
+% Get servo angles from edit boxes (in degrees)
+q1_deg = str2double(get(handles.edit1, 'String'));
+q2_deg = str2double(get(handles.edit2, 'String'));
+q3_deg = str2double(get(handles.edit3, 'String'));
+gripper = str2double(get(handles.edit11, 'String'));
+
+% Validate inputs (ensure they're numbers)
+if isnan(q1_deg), q1_deg = 0; set(handles.edit1, 'String', '0'); end
+if isnan(q2_deg), q2_deg = 0; set(handles.edit2, 'String', '0'); end
+if isnan(q3_deg), q3_deg = 0; set(handles.edit3, 'String', '0'); end
+if isnan(gripper), gripper = 0; set(handles.edit11, 'String', '0'); end
+
+% Convert to radians for robotics calculations
+q1 = deg2rad(q1_deg);
+q2 = deg2rad(q2_deg);
+q3 = deg2rad(q3_deg);
+
+
+% Display values being sent
+disp('Command Values:');
+disp(['  Servo 1: ' num2str(q1_deg) '°']);
+disp(['  Servo 2: ' num2str(q2_deg) '°']);
+disp(['  Servo 3: ' num2str(q3_deg) '°']);
+disp(['  Gripper: ' num2str(gripper)]);
+
+%% SEND TO ARDUINO/ESP32
+if handles.serial_connected && ~isempty(handles.serial_port)
+    try
+        % Use existing serial connection
+        s = handles.serial_port;
+        
+        % Format command: "SERVO <s1> <s2> <s3> <gripper>"
+        cmd = sprintf("SERVO %d %d %d %d", round(q1_deg), round(q2_deg), round(q3_deg), round(gripper));
+        
+        % Send command
+        writeline(s, cmd);
+        disp('✓ Command sent to Arduino/ESP32 successfully!');
+        
+        % Optional: Read response if Arduino sends one
+        if s.NumBytesAvailable > 0
+            response = readline(s);
+            disp(['  Arduino response: ' response]);
+        end
+        
+    catch ME
+        % Communication error
+        disp('✗ Failed to send command to Arduino!');
+        disp(['  Error: ' ME.message]);
+        
+        % Try to reconnect
+        try
+            disp('  Attempting to reconnect...');
+            delete(handles.serial_port);
+            s = serialport("COM5", 115200);  % CHANGE THIS PORT
+            handles.serial_port = s;
+            handles.serial_connected = true;
+            guidata(hObject, handles);
+            disp('  Reconnected successfully!');
+        catch
+            handles.serial_connected = false;
+            guidata(hObject, handles);
+            disp('  Reconnection failed. Check USB connection.');
+        end
+    end
+else
+    disp('⚠ Arduino/ESP32 not connected. Running in simulation mode.');
+    disp('  To connect: Check USB and COM port in ROBOT_OpeningFcn');
+end
+
+%% ROBOT VISUALIZATION
+disp(' ');
+disp('Updating 3D visualization...');
+
+% Robot parameters
+a1 = 36;  % Base height
+a2 = 72;  % Upper arm length
+a3 = 72;  % Forearm length
+
+% Define robot links
+H0_1 = Link([0, a1, 0, pi/2, 0, 0]);
+H1_2 = Link([0, 0, a2, 0, 0, deg2rad(90)]);
+H2_3 = Link([0, 0, a3, 0, 0, deg2rad(270)]);
+
+% Joint configuration
+q = [q1, -q2, q3];  % Note: negative for q2 based on your kinematics
+
+% Create smooth trajectory from previous position
+q_start = q_prev;
+nSteps = 15;  % Number of interpolation steps
+q_traj = jtraj(q_start, q, nSteps);
+
+% Update robot model
+robot = SerialLink([H0_1 H1_2 H2_3], 'name', '3-DOF Robot');
+
+% Animate the movement
+for i = 1:nSteps
+    robot.animate(q_traj(i, :));
+    pause(0.03);  % Small pause for smooth animation
+end
+
+% Store current joint angles for next move
+q_prev = q;
+
+%% CALCULATE AND DISPLAY END-EFFECTOR POSITION
+T = robot.fkine(q);
+position = T.t;
+
+disp(' ');
+disp('End-effector Position:');
+disp(['  X = ' num2str(position(1), '%.2f') ' mm']);
+disp(['  Y = ' num2str(position(2), '%.2f') ' mm']);
+disp(['  Z = ' num2str(position(3), '%.2f') ' mm']);
+disp('===================================');
+
+% Update position displays
+set(handles.edit8, 'String', num2str(position(1), '%.2f'));  % X
+set(handles.edit9, 'String', num2str(position(2), '%.2f'));  % Y
+set(handles.edit10, 'String', num2str(position(3), '%.2f')); % Z
+
+% Save updated handles
+guidata(hObject, handles);
+
+
+% --- X Position Display (Read-only) ---
+function edit8_Callback(hObject, eventdata, handles)
+% This is typically read-only, so we don't process input
+
+% --- Executes during object creation, after setting all properties.
+function edit8_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Y Position Display (Read-only) ---
+function edit9_Callback(hObject, eventdata, handles)
+% This is typically read-only, so we don't process input
+
+% --- Executes during object creation, after setting all properties.
+function edit9_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Z Position Display (Read-only) ---
+function edit10_Callback(hObject, eventdata, handles)
+% This is typically read-only, so we don't process input
+
+% --- Executes during object creation, after setting all properties.
+function edit10_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Optional: Close function to clean up serial connection ---
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Clean up serial connection when GUI closes
+if isfield(handles, 'serial_port') && ~isempty(handles.serial_port)
+    try
+        delete(handles.serial_port);
+        disp('Serial connection closed.');
+    catch
+        % Ignore errors on close
+    end
+end
+
+% Hint: delete(hObject) closes the figure
+delete(hObject);
 
 ## 🔹 Arduino Code
 
---insert arduino code
+```
+
+#include <Servo.h>
+
+const int servo1pin = 3;
+const int servo2pin = 5;
+const int servo3pin = 6;
+const int servo4pin = 9;
+
+int servo1_current_angle = 0;
+int servo2_current_angle = 0;
+int servo3_current_angle = 0;
+int servo4_current_angle = 0;
+
+int servo1_target_angle = 0;
+int servo2_target_angle = 0;
+int servo3_target_angle = 0;
+int servo4_target_angle = 0;
+
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+
+void setup() {
+  Serial.begin(115200);
+  servo1.attach(servo1pin);   
+  servo2.attach(servo2pin);
+  servo3.attach(servo3pin);
+  servo4.attach(servo4pin);
+
+  servo1.write(servo1_current_angle);
+  servo2.write(servo2_current_angle);
+  servo3.write(servo3_current_angle);
+  servo4.write(130-servo4_current_angle);
+
+}
+
+void loop() {
+  if (Serial.available()) {
+    String input = Serial.readStringUntil('\n');
+    input.trim();
+
+
+
+    if (input.startsWith("SERVO")) {
+
+      input.remove(0, 6);
+      servo1_target_angle = input.substring(0, input.indexOf(' ')).toInt();
+
+      input = input.substring(input.indexOf(' ') + 1);
+
+      servo2_target_angle = input.substring(0, input.indexOf(' ')).toInt();
+      input = input.substring(input.indexOf(' ') + 1);
+
+      servo3_target_angle = input.substring(0, input.indexOf(' ')).toInt();
+      
+      servo4_target_angle = input.substring(input.indexOf(' ') + 1).toInt();
+
+      while (
+        servo1_current_angle != servo1_target_angle ||
+        servo2_current_angle != servo2_target_angle ||
+        servo3_current_angle != servo3_target_angle ||
+        servo4_current_angle != servo4_target_angle
+      ) {
+        if (servo1_current_angle < servo1_target_angle) 
+        servo1_current_angle++;
+        else if 
+        (servo1_current_angle > servo1_target_angle) 
+        servo1_current_angle--;
+        servo1.write(servo1_current_angle+10);
+
+        if (servo2_current_angle < servo2_target_angle) 
+        servo2_current_angle++;
+        else if (servo2_current_angle > servo2_target_angle)
+         servo2_current_angle--;
+        servo2.write(servo2_current_angle*1.1+3*(1/(servo2_current_angle+1)));
+
+        if (servo3_current_angle < servo3_target_angle) 
+        servo3_current_angle++;
+        else if (servo3_current_angle > servo3_target_angle) 
+        servo3_current_angle--;
+        servo3.write((servo3_current_angle*1.08)+(3/(servo3_current_angle+1)));
+
+        if (servo4_current_angle < servo4_target_angle) 
+        servo4_current_angle++;
+        else if (servo4_current_angle > servo4_target_angle) 
+        servo4_current_angle--;
+        servo4.write(130-servo4_current_angle*1.44);
+
+        delay(15); 
+      }
+
+      Serial.println("4 Angles set");
+    }
+  }
+}
+
 
 ## 🔹 python Code
 
