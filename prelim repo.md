@@ -55,49 +55,16 @@ This experiment strengthens our understanding of robotic system implementation, 
 ---
 ## General Laboratory Procedure (Summary)
 
-- **Assign D-H frames**  
-  Apply the 4 standard D-H rules sequentially from base to end-effector.
-
-- **Build D-H parametric table**  
-  Fill θ, d, a, α for each link based on frame assignments and diagram.
-
-- **Derive transformation matrices**  
-  Substitute table values into the standard D-H matrix formula.  
-  Create one matrix per link (H0_1, H1_2, …).  
-  Capture screenshots of the matrices (or grouped).
-
-- **Compute overall transformation**  
-  Chain multiply: H0_n = H0_1 × H1_2 × … × H(n-1)_n  
-  Document the multiplication sequence.
-
-- **Python implementation (NumPy)**  
-  Input a_i lengths and joint variables (T1, T2, d3, …).  
-  Convert angles to radians.  
-  Build PT list [theta, alpha, a/r, d].  
-  Manually code each 4×4 matrix using cos/sin.  
-  Convert to np.array.  
-  Print all individual matrices.  
-  Chain with np.dot and print final H0_n (rounded to 3 decimals).
-
-- **MATLAB implementation (Robotics Toolbox)**  
-  Hard-code example link lengths.  
-  Define each Link([θ, d, a, α, offset]).  
-  Set qlim limits and sigma=1 for prismatic joints.  
-  Build SerialLink.  
-  Plot at home pose and use .teach.  
-  Capture screenshot of visualization.
-
-- **Verification – 5 test configurations**  
-  Select 5 joint sets (zero + varied values).  
-  Run both Python and MATLAB for each.  
-  Capture Python output and MATLAB visualization.  
-  Arrange side-by-side comparison images.
-
-- **Documentation structure**  
-  Manipulator title → diagrams → D-H table screenshot →  
-  transformation matrix screenshots → MATLAB visualization →  
-  Python code/output → 5 comparison pairs.
-
+| Step | Task | Description / Notes |
+|------|------|-------------------|
+| 1 | Assign D-H frames | Apply the 4 standard D-H rules sequentially from base to end-effector. |
+| 2 | Build D-H parametric table | Fill θ, d, a, α for each link based on frame assignments and diagram. |
+| 3 | Derive transformation matrices | Substitute table values into standard D-H matrix formula. Create one matrix per link (H0_1, H1_2, …). Capture screenshots of matrices or grouped matrices. |
+| 4 | Compute overall transformation | Chain multiply: H0_n = H0_1 × H1_2 × … × H(n-1)_n. Document multiplication sequence. |
+| 5 | Python implementation (NumPy) | Input a_i lengths and joint variables (T1, T2, d3, …). Convert angles to radians. Build PT list [theta, alpha, a/r, d]. Manually code 4×4 matrices using cos/sin. Convert to np.array. Print individual matrices. Chain multiply with np.dot and print final H0_n (rounded to 3 decimals). |
+| 6 | MATLAB implementation (Robotics Toolbox) | Hard-code example link lengths. Define each Link([θ, d, a, α, offset]). Set qlim and sigma=1 for prismatic joints. Build SerialLink. Plot home pose and use `.teach`. Capture visualization screenshot. |
+| 7 | Verification – 5 test configurations | Select 5 joint sets (zero + varied values). Run both Python and MATLAB for each. Capture Python output and MATLAB visualization. Arrange side-by-side comparison images. |
+| 8 | Documentation structure | Manipulator title → diagrams → D-H table screenshot → transformation matrix screenshots → MATLAB visualization → Python code/output → 5 comparison pairs. |
 ---
 ## 📂 Repository Structure
 
@@ -243,12 +210,8 @@ Post all simulations and analytical comparisons of Python and MATLAB results.
 
 ---
 
-# 🦾 KINEMATICS ANALYSIS  
+# 🔹 Kinematic Diagram
 **Spartan Robokit**
-
----
-
-## 🔹 Kinematic Diagram
 
 <div align="center">
   <img 
@@ -324,88 +287,117 @@ Post all simulations and analytical comparisons of Python and MATLAB results.
 
 ---
 
-# 🎥 MOTION VALIDATION (5 MOVEMENTS)
+## 🎥 MOTION VALIDATION (5 MOVEMENTS)
 
-## 🔹 Individual Movement Demonstrations
+### 🔹 Individual Movement Demonstrations
 
 Each movement corresponds to a unique set of joint variables.
 
 <div align="center">
+  
 
-**Movement 1 to 5**
+https://github.com/user-attachments/assets/0432ee4f-c256-45a3-895f-474847ae9314
 
-<img 
-  src="https://github.com/user-attachments/assets/ac5c21b0-ab11-4983-9f66-112809161212" 
-  alt="Motion Validation - 5 Movements" 
-  width="85%"
-/>
-<br><br>
-<strong>Figure 5:</strong> Demonstration of the five individual movements of the Spartan Robokit.
 
+  <strong>Figure 5:</strong> Demonstration of the five individual movements of the Spartan Robokit.
 </div>
 
 ---
 
-# 🎯 PICK-AND-PLACE DEMONSTRATION
+## 🎯 PICK-AND-PLACE DEMONSTRATION
 
-## 🔹 Task Description
+### 🔹 Task Description
 
 The robotic manipulator performs a pick-and-place operation using only forward kinematics calculations. The robot moves from an initial position, picks up an object, and transfers it to a target location.
 
-## 🔹 Pick-and-Place Video
+### 🔹 Pick-and-Place Video
 
 <div align="center">
 
-<img 
-  src="https://github.com/user-attachments/assets/2e4260db-3bc3-4928-8ca6-8c2550e8daf2" 
-  alt="Pick-and-Place Demonstration" 
-  width="85%"
-/>
-<br><br>
-<strong>Figure 6:</strong> Pick-and-Place task demonstration using forward kinematics.
 
+https://github.com/user-attachments/assets/cc20b1a9-07cc-46e8-8848-5f5c982e2f56
+
+
+  <strong>Figure 6:</strong> Pick-and-Place task demonstration using forward kinematics.
 </div>
-
 
 
 ---
 
+
 ## 🔹 Sequence of Operation
-1. Initial Position
 
-The robotic arm begins in its default or home configuration, where all joint angles (θ1, θ2, θ3) are set to 0°, and the gripper is fully closed. This position is essential as it establishes a consistent reference point for the entire operation. Starting from a fixed initial state ensures repeatability and accuracy in successive cycles. It also allows the system to recalibrate if needed and minimizes positional errors that may accumulate during operation.
+The pick-and-place task is executed through the following 9 sequential steps:
 
-2. Opening the Gripper
+<div align="center">
 
-In this step, the gripper is opened to 45° while all joint angles remain unchanged. This action prepares the end-effector to interact with the object by creating sufficient space for grasping. Maintaining the arm’s position while only adjusting the gripper ensures stability and prevents unintended movement, which could misalign the system before object acquisition.
 
-3. Positioning Toward the Object
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/050be1c1-8f8b-4c8c-b01b-392d2d34da0a" width="100%" alt="Step 1"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/f4d1b332-f270-4c05-93e8-5ca0197722ea" width="100%" alt="Step 2"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/5510bea2-be52-44f2-a701-c7a8ab2ee225" width="100%" alt="Step 3"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>1. Initial Position</strong></td>
+    <td align="center"><strong>2. Opening the Gripper</strong></td>
+    <td align="center"><strong>3. Positioning Toward the Object</strong></td>
+  </tr>
+  
+  <tr>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/91167759-68a5-4da0-b940-eacac249ec41" width="100%" alt="Step 4"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/0b26f10b-5c60-4bb0-82e8-c8d7a9e339a7" width="100%" alt="Step 5"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/a1746344-743d-4d51-b62d-8f52e377355a" width="100%" alt="Step 6"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>4. Grasping the Object</strong></td>
+    <td align="center"><strong>5. Lifting the Object</strong></td>
+    <td align="center"><strong>6. Moving to Target Location</strong></td>
+  </tr>
 
-The robotic arm moves toward the object by adjusting θ2 to 70°, while θ1 and θ3 remain at 0°. This motion effectively lowers or extends the arm downward, depending on the arm’s configuration. θ2 primarily controls the vertical displacement or reach of the arm, making it crucial for accurately aligning the gripper with the object. Keeping θ1 fixed ensures no horizontal displacement, allowing precise targeting.
+  <tr>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/545dc3d6-5e62-4803-bc1a-462c93bac438" width="100%" alt="Step 7"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/00933440-e9bc-4835-9361-9cc3c58f6fc9" width="100%" alt="Step 8"></td>
+    <td align="center" width="33%"><img src="https://github.com/user-attachments/assets/4d5f5bcc-bbca-42de-8926-a7224a34b81b" width="100%" alt="Step 9"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>7. Lowering to Target Position</strong></td>
+    <td align="center"><strong>8. Releasing the Object</strong></td>
+    <td align="center"><strong>9. Returning to Initial Position</strong></td>
+  </tr>
+</table>
+Figure 7: Sequence of Operation for Pick-and-Place Task
+</div>
 
-4. Grasping the Object
+### Detailed Steps:
 
-Once the arm is properly positioned, the gripper closes back to 0°, securing the object firmly. The arm joints remain stationary during this step to maintain alignment and avoid shifting the object. This phase highlights the importance of synchronization between mechanical positioning and gripping action to ensure a stable and successful grasp.
+1. **Initial Position**  
+   The robotic arm begins in its default home configuration, where all joint angles (θ₁, θ₂, θ₃) are set to 0°, and the gripper is fully closed. This establishes a consistent reference point for the entire operation and ensures repeatability.
 
-5. Lifting the Object
+2. **Opening the Gripper**  
+   The gripper is opened to 45° while all joint angles remain unchanged. This prepares the end-effector to grasp the object without moving the arm.
 
-After the object is secured, θ2 returns to 0°, raising the arm and lifting the object away from its original position. This upward movement is critical to prevent collisions with surrounding surfaces or obstacles during transport. By lifting the object to a safe height, the system ensures a smooth transition to the next movement phase.
+3. **Positioning Toward the Object**  
+   The arm moves toward the object by adjusting θ₂ to 70°, while θ₁ and θ₃ remain at 0°. This motion lowers the arm to align the gripper with the object.
 
-6. Moving to Target Location
+4. **Grasping the Object**  
+   Once positioned correctly, the gripper closes back to 0°, securely grasping the object. The arm joints remain stationary during this step to maintain precise alignment.
 
-The arm then rotates θ1 to 60°, changing its horizontal orientation. This movement redirects the arm from the pickup point toward the designated target location. θ1 controls the base rotation, making it responsible for lateral positioning. This step demonstrates how rotational motion is used to transfer the object across different مناطق within the workspace.
+5. **Lifting the Object**  
+   After grasping, θ₂ returns to 0°, raising the arm and lifting the object to a safe height to avoid collisions during transport.
 
-7. Lowering to Target Position
+6. **Moving to Target Location**  
+   The arm rotates θ₁ to 60°, redirecting the end-effector horizontally toward the target location.
 
-To place the object, θ2 is again adjusted to 70°, lowering the arm toward the target surface. This controlled downward movement ensures that the object is accurately positioned before release. Proper alignment at this stage is crucial to avoid misplacement or dropping the object from an unsafe height.
+7. **Lowering to Target Position**  
+   θ₂ is adjusted again to 70° to lower the arm and position the object accurately above the target surface.
 
-8. Releasing the Object
+8. **Releasing the Object**  
+   The gripper opens to 45°, releasing the object at the desired target location.
 
-The gripper opens to 45°, releasing the object at the target location. This step completes the transfer process. The success of this phase depends on the precise positioning achieved in the previous steps, ensuring that the object is placed exactly where intended.
+9. **Returning to Initial Position**  
+   All joints (θ₁, θ₂, θ₃) return to 0°, and the gripper closes, resetting the robotic arm to its home configuration for the next cycle.
 
-9. Returning to Initial Position
-
-Finally, all joints (θ1, θ2, θ3) return to 0°, and the gripper closes. This resets the robotic arm to its original configuration, preparing it for the next operation cycle. Returning to the home position ensures consistency, reduces cumulative error, and allows continuous and repeatable operation.
 ---
 
 # 💻  CODES
@@ -426,47 +418,93 @@ Finally, all joints (θ1, θ2, θ3) return to 0°, and the gripper closes. This 
 
 # 📸 DOCUMENTATION
 
+---
+
 ## 🔹 Project Images
 
-![223f552e-4d42-441e-bc7d-13b5999ed6ad](https://github.com/user-attachments/assets/71df8c51-c54f-48d6-a467-74f2119bf65b)
-
-
----
-
-# ⚙️ CALIBRATION
-
-## 🔹 Calibration Procedure
-
-![087c1aea-2826-465e-a1fc-1486c16fe791](https://github.com/user-attachments/assets/c84bfc4f-468a-4b2f-9e64-90775763f3ed)
-
-![649340084_1482395990009421_530936068278990065_n](https://github.com/user-attachments/assets/d222634a-beda-4908-9458-169b53b2b268)
-![647924531_761401523495013_5028866445921834899_n](https://github.com/user-attachments/assets/a407594d-b038-480b-9c32-7b1efc6cd414)
-
-![642358632_935319702813217_7064893558162541556_n](https://github.com/user-attachments/assets/8adcd71e-9ac0-43a3-8f92-cead70d372ef)
-![653671507_961245206327184_4653076705075570788_n](https://github.com/user-attachments/assets/07038d0e-6fd2-4581-8dd0-ce53bddf2e66)
-![642341077_1112760464313935_3172043573863414524_n](https://github.com/user-attachments/assets/3e850e68-81f5-4772-8597-fdd179474102)
-![642589016_26593358656949034_6663102183343520272_n](https://github.com/user-attachments/assets/7a2a7ede-46a0-42e3-87d1-cd86e07f468c)
-
-
+<div align="center">
+  <img 
+    src="https://github.com/user-attachments/assets/71df8c51-c54f-48d6-a467-74f2119bf65b" 
+    alt="Project Overview" 
+    width="85%"
+  />
+  <br><br>
+  <strong>Figure 8:</strong> Overall view of the Spartan Robokit project setup.
+</div>
 
 ---
 
-# 🦾 KINEMATIC DERIVATIONS
+## ⚙️ CALIBRATION
 
-![648330498_1511123100442640_539532584344813030_n](https://github.com/user-attachments/assets/7af59ac1-c3a9-4671-91d9-484f1cb0eb37)
-![649567747_2351388082007230_2834486893997274348_n](https://github.com/user-attachments/assets/45f2212f-6382-472e-8fb7-00a4763132cc)
+### 🔹 Calibration Procedure
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/c84bfc4f-468a-4b2f-9e64-90775763f3ed" width="48%" alt="Calibration Step 1"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/d222634a-beda-4908-9458-169b53b2b268" width="48%" alt="Calibration Step 2"></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/a407594d-b038-480b-9c32-7b1efc6cd414" width="48%" alt="Calibration Step 3"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/8adcd71e-9ac0-43a3-8f92-cead70d372ef" width="48%" alt="Calibration Step 4"></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/07038d0e-6fd2-4581-8dd0-ce53bddf2e66" width="48%" alt="Calibration Step 5"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/3e850e68-81f5-4772-8597-fdd179474102" width="48%" alt="Calibration Step 6"></td>
+    </tr>
+  </table>
+  <br>
+  <strong>Figure 9:</strong> Calibration procedure steps for the Spartan Robokit.
+</div>
 
 ---
 
-# 🧪 TESTING
+## 🦾 KINEMATIC DERIVATIONS
 
-![Test Procedure](images/test_procedure.png)
+<div align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="https://github.com/user-attachments/assets/7af59ac1-c3a9-4671-91d9-484f1cb0eb37" width="48%" alt="Kinematic Derivation 1"></td>
+      <td align="center"><img src="https://github.com/user-attachments/assets/45f2212f-6382-472e-8fb7-00a4763132cc" width="48%" alt="Kinematic Derivation 2"></td>
+    </tr>
+  </table>
+  <br>
+  <strong>Figure 10:</strong> Kinematic derivations and calculations.
+</div>
 
-![396b1ae7-fc12-4594-a944-708c0703b912](https://github.com/user-attachments/assets/5762b03c-936b-4566-999d-a67f76016ec3)
-![9e05c933-e8c1-4e3c-88b2-dddf662e4f9e](https://github.com/user-attachments/assets/0f68e1b7-cd65-43d5-ac5d-5a1da8505d5e)
-![92225516-1dcd-4341-afb3-a2faae42ed19](https://github.com/user-attachments/assets/2469b724-e8a6-4f68-b3ef-a062560467ff)
+---
 
+## 🧪 TESTING
 
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/5762b03c-936b-4566-999d-a67f76016ec3" width="300"><br>
+      <sub>Test Procedure 1</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/0f68e1b7-cd65-43d5-ac5d-5a1da8505d5e" width="300"><br>
+      <sub>Test Procedure 2</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/2469b724-e8a6-4f68-b3ef-a062560467ff" width="300"><br>
+      <sub>Test Procedure 3</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/7a2a7ede-46a0-42e3-87d1-cd86e07f468c" width="300"><br>
+      <sub>Test Procedure 4</sub>
+    </td>
+  </tr>
+</table>
+
+<br>
+<strong>Figure 11:</strong> Testing procedures and results of the Spartan Robokit.
+
+</div>
 ---
 
 # 📊 ANALYSIS & VERIFICATION
@@ -487,13 +525,16 @@ Finally, all joints (θ1, θ2, θ3) return to 0°, and the gripper closes. This 
 
 ---
 
-Laboratory 2 - Prelims successfully completed.
-Group work submitted on March 01, 2026.
+## Laboratory 2 – Prelims
 
-Prepared by:
-John King Louies R. Solis (Project Leader)
-Ian Avenick G. Fornal (Python Programmer)
-Stephen Jay G. Caparro (MATLAB Programmer)
-Lance Exequiel M. Bonado (Project Engineer)
+The Laboratory 2 – Prelims activity was successfully completed.  
+The group output was submitted on **March 09, 2026**.
 
-Thank you to the lecturer and course staff for the guidance and assigned manipulators.
+### Prepared by:
+- **John King Louies R. Solis** – Project Leader  
+- **Ian Avenick G. Fornal** – Python Programmer  
+- **Stephen Jay G. Caparro** – MATLAB Programmer  
+- **Lance Exequiel M. Bonado** – Project Engineer  
+
+### Acknowledgment
+The group would like to express sincere gratitude to the lecturer and course staff for their guidance, support, and for providing the assigned manipulators necessary for completing this laboratory activity.
