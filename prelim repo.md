@@ -426,7 +426,7 @@ Figure 7: Sequence of Operation for Pick-and-Place Task
   <img 
     src="https://github.com/user-attachments/assets/71df8c51-c54f-48d6-a467-74f2119bf65b" 
     alt="Project Overview" 
-    width="85%"
+    width="60%"
   />
   <br><br>
   <strong>Figure 8:</strong> Overall view of the Spartan Robokit project setup.
