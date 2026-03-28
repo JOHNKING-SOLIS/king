@@ -1,5 +1,3 @@
-<img width="456" height="405" alt="image" src="https://github.com/user-attachments/assets/6e510a0b-91cb-41ab-b1fb-f5c98637fb22" />#<div align="center">
-
 # 🤖 MEXE 3202 – Robotics 2  
 ### Mechanical Manipulator Simulation  
 ### Laboratory 2 - Prelims  (2026)  
