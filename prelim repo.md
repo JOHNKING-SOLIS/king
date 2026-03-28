@@ -1182,7 +1182,7 @@ print(np.around(H0_3,3))
 
 # 📊 ANALYSIS & VERIFICATION
 
-Side-by-Side Comparison of Python and MatLab
+Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of the Spartan Robokit.
 | Python | MATLAB | 
 |-----------|-------|
 |<img width="456" height="405" alt="image" src="https://github.com/user-attachments/assets/8938baba-0169-469f-9e34-f7892bfc3020" />|    | 
