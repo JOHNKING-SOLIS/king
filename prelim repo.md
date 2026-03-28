@@ -1182,11 +1182,12 @@ print(np.around(H0_3,3))
 
 # 📊 ANALYSIS & VERIFICATION
 
-* Forward kinematics equations were applied to compute end-effector position
-* Actual robot motion was observed and recorded
-* Experimental results were compared with theoretical values
-* Error percentage calculated (if applicable)
-
+Side-by-Side Comparison of Python and MatLab
+| Python | MatLab  | 
+|-----------|-------|
+|   |    | 
+|  |     | 
+|   |      | 
 ---
 
 ## ✅ CONCLUSION
