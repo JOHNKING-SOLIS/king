@@ -1189,12 +1189,23 @@ print(np.around(H0_3,3))
 
 ---
 
-# ✅ CONCLUSION
+## ✅ CONCLUSION
 
-* The forward kinematics model was successfully derived and implemented
-* The robotic arm performed the required motions accurately
-* MATLAB and Arduino integration was achieved
-* The system successfully executed a pick-and-place task
+- The forward kinematics model of the robotic manipulator was successfully derived using Denavit-Hartenberg parameters and implemented in both Python and MATLAB environments.
+
+- Based on the conducted test configurations, the computed end-effector positions showed consistent agreement with the actual motion of the robotic arm, validating the accuracy of the developed model.
+
+- The robotic arm was able to perform the required motions accurately and demonstrated repeatability across multiple test cases.
+
+- MATLAB and Arduino integration was successfully achieved, enabling real-time control and execution of servo commands.
+
+- The system successfully executed a complete pick-and-place task, following the defined sequence of operations from initial position, object grasping, transfer, and placement.
+
+- During the experimentation, challenges were encountered in the calibration of link lengths, which required multiple adjustments to achieve accurate positioning of the end-effector.
+
+- Additionally, difficulties were experienced in uploading code to the Arduino board and establishing a stable communication connection, which affected the testing phase and required troubleshooting.
+
+- Overall, the experimental results confirmed that the system is capable of performing accurate and reliable robotic motions, and the objectives of the laboratory activity were successfully achieved.
 
 ---
 
