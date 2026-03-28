@@ -1180,6 +1180,7 @@ print(np.around(H0_3,3))
 
 # 📊 ANALYSIS & VERIFICATION
 
+A comparison between Python and MATLAB results is conducted to assess their consistency and accuracy, in order to validate the implementation.
 | Python | MATLAB | 
 |:-----------:|:-------:|
 |<img width="456" height="389" alt="image" src="https://github.com/user-attachments/assets/b6b7d84a-0556-46dc-b173-fe171b1beec5" />|![7c340cfd-0a05-41a9-836c-b5f958b6194a](https://github.com/user-attachments/assets/e97bb9ce-6ddc-48e5-a33b-c8ca221b2a1e)|
