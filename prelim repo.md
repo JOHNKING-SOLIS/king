@@ -1180,7 +1180,6 @@ print(np.around(H0_3,3))
 
 # 📊 ANALYSIS & VERIFICATION
 
-Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of the Spartan Robokit.
 | Python | MATLAB | 
 |:-----------:|:-------:|
 |<img width="456" height="389" alt="image" src="https://github.com/user-attachments/assets/b6b7d84a-0556-46dc-b173-fe171b1beec5" />|![7c340cfd-0a05-41a9-836c-b5f958b6194a](https://github.com/user-attachments/assets/e97bb9ce-6ddc-48e5-a33b-c8ca221b2a1e)|
@@ -1188,11 +1187,9 @@ Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of
 |<img width="463" height="390" alt="image" src="https://github.com/user-attachments/assets/f8405e0a-9964-4cd4-9fd5-b4584fc39813" />|![9706dad0-c1ae-4d31-ad6c-204038b330d1](https://github.com/user-attachments/assets/8709c4b0-ee21-421c-9628-555ab11c08f3)| 
 |<img width="498" height="389" alt="image" src="https://github.com/user-attachments/assets/e987dcba-646f-46e9-a73d-9f751abe1ea3" />|![272cd6fd-9328-49b2-afbc-2e93d132a064](https://github.com/user-attachments/assets/91cd34be-d50a-4c57-8a5f-878087909d04)| 
 |<img width="457" height="387" alt="image" src="https://github.com/user-attachments/assets/8264720a-09be-4133-a420-f9218b479800" />|![2a70dd1c-0313-492d-a8bd-18c19e5e5ac3](https://github.com/user-attachments/assets/0f6b2a34-cf91-483c-9872-d460aeb753b7)|
-<br>
-<strong>Figure 12:</strong> Comparison of Python and MATLABin the Five Individual Movements of the Spartan Robokit.
-
-</div>
-
+<p align="center">
+Figure 12: Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of the Spartan Robokit.
+</p>
 ---
 
 ## ✅ CONCLUSION
