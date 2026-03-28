@@ -1,4 +1,4 @@
-#<div align="center">
+<img width="456" height="405" alt="image" src="https://github.com/user-attachments/assets/6e510a0b-91cb-41ab-b1fb-f5c98637fb22" />#<div align="center">
 
 # 🤖 MEXE 3202 – Robotics 2  
 ### Mechanical Manipulator Simulation  
@@ -1183,11 +1183,15 @@ print(np.around(H0_3,3))
 # 📊 ANALYSIS & VERIFICATION
 
 Side-by-Side Comparison of Python and MatLab
-| Python | MatLab  | 
+| Python | MATLAB | 
 |-----------|-------|
-|   |    | 
-|  |     | 
-|   |      | 
+|<img width="456" height="405" alt="image" src="https://github.com/user-attachments/assets/8938baba-0169-469f-9e34-f7892bfc3020" />|    | 
+|<img width="463" height="390" alt="image" src="https://github.com/user-attachments/assets/f8405e0a-9964-4cd4-9fd5-b4584fc39813" />|    | 
+|<img width="498" height="389" alt="image" src="https://github.com/user-attachments/assets/e987dcba-646f-46e9-a73d-9f751abe1ea3" />|    | 
+|<img width="457" height="387" alt="image" src="https://github.com/user-attachments/assets/8264720a-09be-4133-a420-f9218b479800" />|    |
+|<img width="456" height="389" alt="image" src="https://github.com/user-attachments/assets/b6b7d84a-0556-46dc-b173-fe171b1beec5" />|    |
+
+
 ---
 
 ## ✅ CONCLUSION
