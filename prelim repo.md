@@ -1188,7 +1188,7 @@ print(np.around(H0_3,3))
 |<img width="498" height="389" alt="image" src="https://github.com/user-attachments/assets/e987dcba-646f-46e9-a73d-9f751abe1ea3" />|![272cd6fd-9328-49b2-afbc-2e93d132a064](https://github.com/user-attachments/assets/91cd34be-d50a-4c57-8a5f-878087909d04)| 
 |<img width="457" height="387" alt="image" src="https://github.com/user-attachments/assets/8264720a-09be-4133-a420-f9218b479800" />|![2a70dd1c-0313-492d-a8bd-18c19e5e5ac3](https://github.com/user-attachments/assets/0f6b2a34-cf91-483c-9872-d460aeb753b7)|
 <p align="center">
-Figure 12: Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of the Spartan Robokit.
+<strong>Figure 12:<strong> Side-by-Side Comparison of Python and MATLAB in the Five Individual Movements of the Spartan Robokit.
 </p>
 ---
 
